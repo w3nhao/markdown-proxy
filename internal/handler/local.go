@@ -29,6 +29,17 @@ func (h *LocalHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		filePath = "/"
 	}
 
+	// Expand ~ to home directory
+	if strings.HasPrefix(filePath, "/~/") {
+		if home, err := os.UserHomeDir(); err == nil {
+			filePath = home + filePath[2:]
+		}
+	} else if filePath == "/~" {
+		if home, err := os.UserHomeDir(); err == nil {
+			filePath = home
+		}
+	}
+
 	// Clean the path to prevent directory traversal
 	filePath = filepath.Clean(filePath)
 
