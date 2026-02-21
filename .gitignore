@@ -1,0 +1,20 @@
+# Project documents (local only)
+00_request.md
+01_requirements.md
+02_design.md
+03_plan.md
+CLAUDE.md
+
+# Go build output
+markdown-proxy
+markdown-proxy.exe
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
