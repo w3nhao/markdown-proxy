@@ -153,8 +153,9 @@ func (h *RemoteHandler) fetchRemote(remoteURL, remotePath string) ([]byte, strin
 	// not the resolved raw host (e.g. raw.githubusercontent.com)
 	if httpErr, ok := err.(*httpError); ok && (httpErr.StatusCode == 401 || httpErr.StatusCode == 403 || httpErr.StatusCode == 404) {
 		host := ghub.HostFromPath(remotePath)
-		log.Printf("Got %d for %s, trying git credential for host=%s", httpErr.StatusCode, remoteURL, host)
-		username, password, credErr := credential.GetToken(host)
+		credPath := ghub.PathFromPath(remotePath)
+		log.Printf("Got %d for %s, trying git credential for host=%s path=%s", httpErr.StatusCode, remoteURL, host, credPath)
+		username, password, credErr := credential.GetToken(host, credPath)
 		if credErr != nil {
 			log.Printf("Warning: git credential failed for %s: %v", host, credErr)
 			return nil, "", err // return original HTTP error
