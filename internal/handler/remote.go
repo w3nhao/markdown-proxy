@@ -141,17 +141,21 @@ func (h *RemoteHandler) renderResponse(w http.ResponseWriter, body []byte, conte
 }
 
 func (h *RemoteHandler) fetchRemote(remoteURL, remotePath string) ([]byte, string, error) {
-	// First attempt: without authentication
-	body, contentType, err := h.doFetch(remoteURL, "", "")
+	// First attempt: without authentication, do not follow redirects.
+	// Self-hosted GitLab redirects to login page (302) for unauthenticated access,
+	// and Go's http.Client follows redirects by default, returning 200 (login HTML).
+	// By disabling redirects, we get the 3xx status code and can trigger auth retry.
+	body, contentType, err := h.doFetch(remoteURL, "", "", false)
 	if err == nil {
 		return body, contentType, nil
 	}
 
-	// If 401/403/404, retry with git credential helper
+	// If 3xx/401/403/404, retry with git credential helper
 	// Note: GitHub returns 404 for private repos when unauthenticated
+	// Note: Self-hosted GitLab returns 302 redirect to login for unauthenticated access
 	// Use original remotePath host (e.g. github.com) for credential lookup,
 	// not the resolved raw host (e.g. raw.githubusercontent.com)
-	if httpErr, ok := err.(*httpError); ok && (httpErr.StatusCode == 401 || httpErr.StatusCode == 403 || httpErr.StatusCode == 404) {
+	if httpErr, ok := err.(*httpError); ok && (httpErr.StatusCode == 401 || httpErr.StatusCode == 403 || httpErr.StatusCode == 404 || (httpErr.StatusCode >= 300 && httpErr.StatusCode <= 399)) {
 		host := ghub.HostFromPath(remotePath)
 		credPath := ghub.PathFromPath(remotePath)
 		log.Printf("Got %d for %s, trying git credential for host=%s path=%s", httpErr.StatusCode, remoteURL, host, credPath)
@@ -165,7 +169,8 @@ func (h *RemoteHandler) fetchRemote(remoteURL, remotePath string) ([]byte, strin
 				username = "oauth2"
 			}
 			log.Printf("Retrying with credential (user=%s) for %s", username, remoteURL)
-			return h.doFetch(remoteURL, username, password)
+			// Authenticated retry follows redirects normally (for legitimate redirects)
+			return h.doFetch(remoteURL, username, password, true)
 		}
 		log.Printf("Warning: git credential returned empty password for %s", host)
 	}
@@ -173,7 +178,7 @@ func (h *RemoteHandler) fetchRemote(remoteURL, remotePath string) ([]byte, strin
 	return nil, "", err
 }
 
-func (h *RemoteHandler) doFetch(remoteURL, username, password string) ([]byte, string, error) {
+func (h *RemoteHandler) doFetch(remoteURL, username, password string, followRedirects bool) ([]byte, string, error) {
 	req, err := http.NewRequest("GET", remoteURL, nil)
 	if err != nil {
 		return nil, "", err
@@ -184,7 +189,19 @@ func (h *RemoteHandler) doFetch(remoteURL, username, password string) ([]byte, s
 		req.Header.Set("Authorization", "token "+password)
 	}
 
-	resp, err := h.client.Do(req)
+	client := h.client
+	if !followRedirects {
+		// Shallow copy the client and disable redirect following.
+		// This allows detecting 3xx responses (e.g., self-hosted GitLab
+		// redirecting to login page) as auth-required signals.
+		c := *h.client
+		c.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		}
+		client = &c
+	}
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, "", err
 	}
