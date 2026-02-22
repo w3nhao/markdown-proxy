@@ -2,6 +2,15 @@
 
 An HTTP proxy server for viewing Markdown files in a browser. Supports both local and remote access modes.
 
+## Motivation
+
+Existing Markdown viewing environments have several pain points:
+
+- **Limited local preview**: Tools like VS Code's Markdown Preview Enhanced are widely used for local Markdown viewing, but they can only display one preview pane at a time, making it difficult to reference multiple documents simultaneously.
+- **Incomplete diagram rendering on remote servers**: Platforms such as GitHub and GitLab often do not render PlantUML diagrams embedded in Markdown files, leaving them displayed as raw code blocks.
+
+markdown-proxy solves these problems by rendering Markdown files — including PlantUML diagrams — as HTML in a standard browser, where you can freely open multiple tabs and windows.
+
 ## Features
 
 - Render local and remote Markdown files as HTML
