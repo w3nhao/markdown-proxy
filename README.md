@@ -19,7 +19,7 @@ markdown-proxy solves these problems by rendering Markdown files — including P
 - Code block rendering
   - SVG: inline SVG rendering from ```` ```svg ```` code blocks
   - Mermaid: client-side rendering via mermaid.js from ```` ```mermaid ```` code blocks
-  - PlantUML: server-side rendering from ```` ```plantuml ```` code blocks
+  - PlantUML: server-side rendering from ```` ```plantuml ```` code blocks (requires `--plantuml-server`)
 - GitHub/GitLab integration
   - Blob URL auto-conversion to raw URL (supports self-hosted GitLab with custom domains)
   - Authentication via git credential helper (supports path-based credential matching)
@@ -59,7 +59,7 @@ markdown-proxy [options]
 | `--port`, `-p` | Listen port | `9080` |
 | `--listen` | Bind address (`127.0.0.1` for local, `0.0.0.0` for remote) | `127.0.0.1` |
 | `--theme` | Default CSS theme (`github`, `simple`, `dark`) | `github` |
-| `--plantuml-server` | PlantUML server URL | `https://www.plantuml.com/plantuml` |
+| `--plantuml-server` | PlantUML server URL | (disabled) |
 | `--auth-token` | Authentication token (required in remote mode) | |
 | `--auth-cookie-max-age` | Authentication cookie max age in days | `30` |
 | `--access-log` | Access log file path | |

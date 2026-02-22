@@ -25,7 +25,7 @@ func Parse() *Config {
 	flag.IntVar(&c.Port, "p", 9080, "Listen port (shorthand)")
 	flag.StringVar(&c.Listen, "listen", "127.0.0.1", "Bind address (use 0.0.0.0 for remote access)")
 	flag.StringVar(&c.Theme, "theme", "github", "Default CSS theme")
-	flag.StringVar(&c.PlantUMLServer, "plantuml-server", "https://www.plantuml.com/plantuml", "PlantUML server URL")
+	flag.StringVar(&c.PlantUMLServer, "plantuml-server", "", "PlantUML server URL (disabled by default; e.g. https://www.plantuml.com/plantuml)")
 	flag.BoolVar(&c.Verbose, "verbose", false, "Enable debug logging")
 	flag.BoolVar(&c.Verbose, "v", false, "Enable debug logging (shorthand)")
 	flag.StringVar(&c.AuthToken, "auth-token", "", "Authentication token (required in remote mode)")
