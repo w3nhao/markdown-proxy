@@ -13,7 +13,7 @@ An HTTP proxy server for viewing Markdown files in a browser. Supports both loca
   - PlantUML: server-side rendering from ```` ```plantuml ```` code blocks
 - GitHub/GitLab integration
   - Blob URL auto-conversion to raw URL
-  - Authentication via git credential helper (on 401/403 only)
+  - Authentication via git credential helper (supports path-based credential matching)
 - Multiple CSS themes (GitHub, Simple, Dark) with switching UI
 - Live reload for local files (auto-refreshes browser on file changes)
 - Directory listing for local files

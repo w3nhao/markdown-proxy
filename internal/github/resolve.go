@@ -72,3 +72,13 @@ func HostFromPath(path string) string {
 	}
 	return path[:idx]
 }
+
+// PathFromPath extracts the path portion (after the host) from a URL path.
+// e.g., "github.com/user/repo/blob/main/file.md" → "user/repo/blob/main/file.md"
+func PathFromPath(path string) string {
+	idx := strings.Index(path, "/")
+	if idx < 0 {
+		return ""
+	}
+	return path[idx+1:]
+}
