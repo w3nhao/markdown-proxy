@@ -19,7 +19,7 @@ markdown-proxy solves these problems by rendering Markdown files — including P
 - Code block rendering
   - SVG: inline SVG rendering from ```` ```svg ```` code blocks
   - Mermaid: client-side rendering via mermaid.js from ```` ```mermaid ```` code blocks
-  - PlantUML: server-side rendering from ```` ```plantuml ```` code blocks (requires `--plantuml-server`)
+  - PlantUML: server-side rendering from ```` ```plantuml ```` code blocks (requires `-plantuml-server`)
 - GitHub/GitLab integration
   - Blob URL auto-conversion to raw URL (supports self-hosted GitLab with custom domains)
   - Authentication via git credential helper (supports path-based credential matching)
@@ -54,19 +54,21 @@ markdown-proxy [options]
 
 ### Options
 
+> **Note:** Options use a single dash (e.g., `-port`) following Go's `flag` package convention. Double dashes (`--port`) also work.
+
 | Flag | Description | Default |
 |------|-------------|---------|
-| `--port`, `-p` | Listen port | `9080` |
-| `--listen` | Bind address (`127.0.0.1` for local, `0.0.0.0` for remote) | `127.0.0.1` |
-| `--theme` | Default CSS theme (`github`, `simple`, `dark`) | `github` |
-| `--plantuml-server` | PlantUML server URL | (disabled) |
-| `--auth-token` | Authentication token (required in remote mode) | |
-| `--auth-cookie-max-age` | Authentication cookie max age in days | `30` |
-| `--access-log` | Access log file path | |
-| `--access-log-max-size` | Max log file size in MB before rotation | `100` |
-| `--access-log-max-backups` | Max number of old log files to retain | `3` |
-| `--access-log-max-age` | Max days to retain old log files | `28` |
-| `--verbose`, `-v` | Enable debug logging to stderr | `false` |
+| `-port`, `-p` | Listen port | `9080` |
+| `-listen` | Bind address (`127.0.0.1` for local, `0.0.0.0` for remote) | `127.0.0.1` |
+| `-theme` | Default CSS theme (`github`, `simple`, `dark`) | `github` |
+| `-plantuml-server` | PlantUML server URL | (disabled) |
+| `-auth-token` | Authentication token (required in remote mode) | |
+| `-auth-cookie-max-age` | Authentication cookie max age in days | `30` |
+| `-access-log` | Access log file path | |
+| `-access-log-max-size` | Max log file size in MB before rotation | `100` |
+| `-access-log-max-backups` | Max number of old log files to retain | `3` |
+| `-access-log-max-age` | Max days to retain old log files | `28` |
+| `-verbose`, `-v` | Enable debug logging to stderr | `false` |
 
 ## Operation Modes
 
@@ -85,12 +87,12 @@ The server binds to `127.0.0.1` and all features are available:
 ### Remote Mode
 
 ```bash
-markdown-proxy --listen 0.0.0.0 --auth-token my-secret-token
+markdown-proxy -listen 0.0.0.0 -auth-token my-secret-token
 ```
 
 The server binds to the specified address for network access. For security:
 - **Local file access is disabled**: `/local/` and `/_sse` return 403 Forbidden
-- **Authentication is required**: `--auth-token` must be specified
+- **Authentication is required**: `-auth-token` must be specified
 - **Private network access is blocked**: SSRF protection prevents fetching from internal IPs
 - **Top page** shows URL input only (no local file path input)
 
@@ -104,9 +106,9 @@ Access logs record each request in the following format:
 2026-02-22T15:04:05+09:00 192.168.1.10 GET /https/github.com/user/repo 200 1234 150ms
 ```
 
-- `--access-log /var/log/mdproxy/access.log`: Log to a file with automatic rotation
-- In remote mode without `--access-log`: Logs to stdout by default
-- In local mode without `--access-log`: No access logging
+- `-access-log /var/log/mdproxy/access.log`: Log to a file with automatic rotation
+- In remote mode without `-access-log`: Logs to stdout by default
+- In local mode without `-access-log`: No access logging
 
 Log rotation is handled automatically using configurable size, count, and age limits.
 
