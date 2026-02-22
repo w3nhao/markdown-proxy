@@ -12,8 +12,9 @@ An HTTP proxy server for viewing Markdown files in a browser. Supports both loca
   - Mermaid: client-side rendering via mermaid.js from ```` ```mermaid ```` code blocks
   - PlantUML: server-side rendering from ```` ```plantuml ```` code blocks
 - GitHub/GitLab integration
-  - Blob URL auto-conversion to raw URL
+  - Blob URL auto-conversion to raw URL (supports self-hosted GitLab with custom domains)
   - Authentication via git credential helper (supports path-based credential matching)
+  - Redirect-based auth detection for self-hosted GitLab instances
 - Multiple CSS themes (GitHub, Simple, Dark) with switching UI
 - Live reload for local files (auto-refreshes browser on file changes)
 - Directory listing for local files

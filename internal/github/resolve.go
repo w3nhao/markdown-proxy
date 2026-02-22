@@ -11,8 +11,9 @@ var githubBlobRe = regexp.MustCompile(`^github\.com/([^/]+)/([^/]+)/blob/([^/]+)
 // GitHub repo root pattern: github.com/user/repo (with optional trailing slash)
 var githubRepoRe = regexp.MustCompile(`^github\.com/([^/]+)/([^/]+?)/?$`)
 
-// GitLab blob URL pattern: gitlab.com/user/repo/-/blob/<ref>/path
-var gitlabBlobRe = regexp.MustCompile(`^gitlab\.com/([^/]+)/([^/]+)/-/blob/([^/]+)/(.+)$`)
+// GitLab blob URL pattern: <host>/<project>/-/blob/<ref>/path
+// Matches any host with /-/blob/ (GitLab-specific URL structure), supporting subgroups.
+var gitlabBlobRe = regexp.MustCompile(`^([^/]+)/(.+?)/-/blob/([^/]+)/(.+)$`)
 
 // GitLab repo root pattern: gitlab.com/user/repo (with optional trailing slash)
 var gitlabRepoRe = regexp.MustCompile(`^gitlab\.com/([^/]+)/([^/]+?)/?$`)
@@ -28,10 +29,10 @@ func ResolveRawURL(path string) (string, bool) {
 		return rawURL, true
 	}
 
-	// GitLab: gitlab.com/user/repo/-/blob/<ref>/path → gitlab.com/user/repo/-/raw/<ref>/path
+	// GitLab: <host>/<project>/-/blob/<ref>/path → <host>/<project>/-/raw/<ref>/path
 	if m := gitlabBlobRe.FindStringSubmatch(path); m != nil {
-		user, repo, ref, filePath := m[1], m[2], m[3], m[4]
-		rawURL := "gitlab.com/" + user + "/" + repo + "/-/raw/" + ref + "/" + filePath
+		host, project, ref, filePath := m[1], m[2], m[3], m[4]
+		rawURL := host + "/" + project + "/-/raw/" + ref + "/" + filePath
 		return rawURL, true
 	}
 
