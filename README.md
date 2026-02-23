@@ -39,6 +39,28 @@ markdown-proxy solves these problems by rendering Markdown files — including P
 - Access logging with automatic log rotation
 - Single binary, no runtime dependencies
 
+## Quick Start
+
+```bash
+# Install
+go install github.com/patakuti/markdown-proxy/cmd/markdown-proxy@latest
+
+# Start the server
+markdown-proxy
+
+# Open in browser
+open http://localhost:9080/
+```
+
+Enter a local file path (e.g., `/path/to/README.md`) or a remote URL (e.g., `https://github.com/user/repo`) on the top page.
+
+## Use Cases
+
+- **Reviewing multiple documents side by side**: Open several Markdown files in separate browser tabs — no single-pane limitation like IDE preview plugins.
+- **Viewing PlantUML/Mermaid diagrams**: Render diagrams embedded in Markdown that GitHub/GitLab don't display natively.
+- **Browsing private repositories**: Access Markdown files from private GitHub/GitLab repos using your existing git credentials.
+- **Sharing a Markdown viewer with your team**: Run in remote mode with token authentication to let team members view documentation through a browser.
+
 ## URL Scheme
 
 | Type | URL Format |
@@ -175,6 +197,24 @@ make windows
 
 ```bash
 go build -o markdown-proxy ./cmd/markdown-proxy
+```
+
+## Known Limitations
+
+- **Read-only viewer**: No editing capabilities; this is a rendering-only tool.
+- **Markdown files only**: Only `.md` and `.markdown` files are converted to HTML. Other file types are served as-is.
+- **PlantUML disabled by default**: Diagram content is sent to an external server, so it requires explicit opt-in via `--plantuml-server`.
+- **GitHub/GitLab branch detection**: When accessing a repository root URL, only `main` and `master` branches are tried for README.md auto-detection.
+- **No PDF export**: Rendered pages can only be viewed in the browser (use the browser's print-to-PDF as a workaround).
+- **Hidden files excluded**: Files and directories starting with `.` are not shown in directory listings.
+
+## Contributing
+
+Bug reports and feature requests are welcome via [GitHub Issues](https://github.com/patakuti/markdown-proxy/issues). Pull requests are also appreciated — please open an issue first to discuss the change.
+
+```bash
+# Build and test locally
+make build
 ```
 
 ## Project Structure
