@@ -2,6 +2,8 @@
 
 An HTTP proxy server for viewing Markdown files in a browser. Supports both local and remote access modes.
 
+![Demo](docs/demo.gif)
+
 ## Motivation
 
 Existing Markdown viewing environments have several pain points:
