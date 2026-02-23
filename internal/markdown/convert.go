@@ -3,6 +3,7 @@ package markdown
 import (
 	"bytes"
 
+	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
 	mathjax "github.com/litao91/goldmark-mathjax"
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting/v2"
@@ -19,6 +20,9 @@ func init() {
 			extension.GFM,
 			highlighting.NewHighlighting(
 				highlighting.WithStyle("github"),
+				highlighting.WithFormatOptions(
+					chromahtml.WithClasses(true),
+				),
 			),
 			mathjax.MathJax,
 		),

@@ -62,9 +62,10 @@ const githubCSS = `
   background: #f6f8fa;
   padding: 16px;
   border-radius: 6px;
+  border: 1px solid #e1e4e8;
   overflow: auto;
 }
-.theme-github .markdown-body pre code { background: none; padding: 0; }
+.theme-github .markdown-body pre code { background: none; padding: 0; font-size: 100%; }
 .theme-github .markdown-body blockquote {
   color: #6a737d;
   border-left: .25em solid #dfe2e5;
@@ -91,9 +92,10 @@ const simpleCSS = `
   background: #f0f0f0;
   padding: 14px;
   border-radius: 4px;
+  border: 1px solid #ddd;
   overflow: auto;
 }
-.theme-simple .markdown-body pre code { background: none; padding: 0; }
+.theme-simple .markdown-body pre code { background: none; padding: 0; font-size: 100%; }
 .theme-simple .markdown-body blockquote {
   color: #666;
   border-left: 3px solid #ccc;
@@ -123,9 +125,10 @@ const darkCSS = `
   background: #161b22;
   padding: 16px;
   border-radius: 6px;
+  border: 1px solid #30363d;
   overflow: auto;
 }
-.theme-dark .markdown-body pre code { background: none; padding: 0; }
+.theme-dark .markdown-body pre code { background: none; padding: 0; font-size: 100%; }
 .theme-dark .markdown-body blockquote {
   color: #8b949e;
   border-left: .25em solid #30363d;
