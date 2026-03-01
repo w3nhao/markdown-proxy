@@ -105,7 +105,9 @@ func (h *RemoteHandler) renderMarkdownResponse(w http.ResponseWriter, body []byt
 
 // renderResponse renders body based on file extension.
 func (h *RemoteHandler) renderResponse(w http.ResponseWriter, body []byte, contentType, fetchPath, remotePath, scheme string) {
-	ext := strings.ToLower(path.Ext(fetchPath))
+	// Use remotePath (original blob URL) for extension detection, not fetchPath.
+	// fetchPath may be a GitLab API URL (ending in /raw?ref=...) which has no file extension.
+	ext := strings.ToLower(path.Ext(remotePath))
 
 	// Non-markdown files: pass through
 	if ext != ".md" && ext != ".markdown" {
@@ -185,8 +187,9 @@ func (h *RemoteHandler) doFetch(remoteURL, username, password string, followRedi
 	}
 
 	if password != "" {
-		// GitHub/GitLab tokens work with "token <PAT>" authorization header
-		req.Header.Set("Authorization", "token "+password)
+		// Use "Bearer" format for OAuth2 tokens (glab auth login) and PATs.
+		// GitHub also accepts "Bearer" as an alias for "token".
+		req.Header.Set("Authorization", "Bearer "+password)
 	}
 
 	client := h.client

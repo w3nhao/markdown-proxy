@@ -40,19 +40,19 @@ func TestResolveRawURL(t *testing.T) {
 		{
 			name:   "GitLab basic blob URL",
 			path:   "gitlab.com/user/repo/-/blob/main/README.md",
-			want:   "gitlab.com/user/repo/-/raw/main/README.md",
+			want:   "gitlab.com/api/v4/projects/user%2Frepo/repository/files/README.md/raw?ref=main",
 			wantOK: true,
 		},
 		{
 			name:   "GitLab subgroup",
 			path:   "gitlab.com/group/subgroup/repo/-/blob/main/file.md",
-			want:   "gitlab.com/group/subgroup/repo/-/raw/main/file.md",
+			want:   "gitlab.com/api/v4/projects/group%2Fsubgroup%2Frepo/repository/files/file.md/raw?ref=main",
 			wantOK: true,
 		},
 		{
 			name:   "GitLab custom domain",
 			path:   "gitlab.example.com/team/project/-/blob/develop/docs/api.md",
-			want:   "gitlab.example.com/team/project/-/raw/develop/docs/api.md",
+			want:   "gitlab.example.com/api/v4/projects/team%2Fproject/repository/files/docs%2Fapi.md/raw?ref=develop",
 			wantOK: true,
 		},
 		// Non-matching paths
@@ -121,16 +121,16 @@ func TestResolveRepoRootURLs(t *testing.T) {
 			name: "GitLab repo root",
 			path: "gitlab.com/user/repo",
 			want: []string{
-				"gitlab.com/user/repo/-/raw/main/README.md",
-				"gitlab.com/user/repo/-/raw/master/README.md",
+				"gitlab.com/api/v4/projects/user%2Frepo/repository/files/README.md/raw?ref=main",
+				"gitlab.com/api/v4/projects/user%2Frepo/repository/files/README.md/raw?ref=master",
 			},
 		},
 		{
 			name: "GitLab repo root with trailing slash",
 			path: "gitlab.com/user/repo/",
 			want: []string{
-				"gitlab.com/user/repo/-/raw/main/README.md",
-				"gitlab.com/user/repo/-/raw/master/README.md",
+				"gitlab.com/api/v4/projects/user%2Frepo/repository/files/README.md/raw?ref=main",
+				"gitlab.com/api/v4/projects/user%2Frepo/repository/files/README.md/raw?ref=master",
 			},
 		},
 		{
