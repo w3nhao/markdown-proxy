@@ -29,11 +29,14 @@ func ResolveRawURL(path string) (string, bool) {
 		return rawURL, true
 	}
 
-	// GitLab: <host>/<project>/-/blob/<ref>/path → <host>/<project>/-/raw/<ref>/path
+	// GitLab: <host>/<project>/-/blob/<ref>/path → <host>/api/v4/projects/<encoded_project>/repository/files/<encoded_file>/raw?ref=<ref>
+	// Uses the GitLab API endpoint instead of /-/raw/ because the web endpoint does not
+	// accept Bearer token authentication on some self-hosted instances.
 	if m := gitlabBlobRe.FindStringSubmatch(path); m != nil {
 		host, project, ref, filePath := m[1], m[2], m[3], m[4]
-		rawURL := host + "/" + project + "/-/raw/" + ref + "/" + filePath
-		return rawURL, true
+		encodedProject := strings.ReplaceAll(project, "/", "%2F")
+		encodedFilePath := strings.ReplaceAll(filePath, "/", "%2F")
+		return host + "/api/v4/projects/" + encodedProject + "/repository/files/" + encodedFilePath + "/raw?ref=" + ref, true
 	}
 
 	return path, false
@@ -52,12 +55,13 @@ func ResolveRepoRootURLs(path string) []string {
 		}
 	}
 
-	// GitLab: gitlab.com/user/repo → try main, then master
+	// GitLab: gitlab.com/user/repo → try main, then master (via API endpoint)
 	if m := gitlabRepoRe.FindStringSubmatch(path); m != nil {
 		user, repo := m[1], m[2]
+		encodedProject := user + "%2F" + repo
 		return []string{
-			"gitlab.com/" + user + "/" + repo + "/-/raw/main/README.md",
-			"gitlab.com/" + user + "/" + repo + "/-/raw/master/README.md",
+			"gitlab.com/api/v4/projects/" + encodedProject + "/repository/files/README.md/raw?ref=main",
+			"gitlab.com/api/v4/projects/" + encodedProject + "/repository/files/README.md/raw?ref=master",
 		}
 	}
 
