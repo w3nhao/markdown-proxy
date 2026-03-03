@@ -28,12 +28,15 @@ func (h *RemoteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Determine scheme from URL path prefix
 	var scheme string
 	var remotePath string
+	var remoteEscaped string
 	if strings.HasPrefix(r.URL.Path, "/https/") {
 		scheme = "https"
 		remotePath = strings.TrimPrefix(r.URL.Path, "/https/")
+		remoteEscaped = strings.TrimPrefix(r.URL.EscapedPath(), "/https/")
 	} else if strings.HasPrefix(r.URL.Path, "/http/") {
 		scheme = "http"
 		remotePath = strings.TrimPrefix(r.URL.Path, "/http/")
+		remoteEscaped = strings.TrimPrefix(r.URL.EscapedPath(), "/http/")
 	} else {
 		http.Error(w, "Invalid URL scheme", http.StatusBadRequest)
 		return
@@ -45,7 +48,7 @@ func (h *RemoteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Check if this is a repo root URL (e.g., github.com/user/repo)
-	if candidates := ghub.ResolveRepoRootURLs(remotePath); candidates != nil {
+	if candidates := ghub.ResolveRepoRootURLs(remoteEscaped); candidates != nil {
 		for _, candidate := range candidates {
 			candidateURL := scheme + "://" + candidate
 			body, contentType, err := h.fetchRemote(candidateURL, remotePath)
@@ -59,8 +62,8 @@ func (h *RemoteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Resolve GitHub/GitLab blob URLs to raw URLs
-	fetchPath := remotePath
-	if resolved, ok := ghub.ResolveRawURL(remotePath); ok {
+	fetchPath := remoteEscaped
+	if resolved, ok := ghub.ResolveRawURL(remoteEscaped); ok {
 		fetchPath = resolved
 	}
 
