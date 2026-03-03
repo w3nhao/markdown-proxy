@@ -55,6 +55,25 @@ func TestResolveRawURL(t *testing.T) {
 			want:   "gitlab.example.com/api/v4/projects/team%2Fproject/repository/files/docs%2Fapi.md/raw?ref=develop",
 			wantOK: true,
 		},
+		// URL-encoded Japanese characters
+		{
+			name:   "GitHub blob URL with encoded Japanese filename",
+			path:   "github.com/user/repo/blob/main/docs/%E6%97%A5%E6%9C%AC%E8%AA%9E.md",
+			want:   "raw.githubusercontent.com/user/repo/main/docs/%E6%97%A5%E6%9C%AC%E8%AA%9E.md",
+			wantOK: true,
+		},
+		{
+			name:   "GitLab blob URL with encoded Japanese filename",
+			path:   "gitlab.com/user/repo/-/blob/main/docs/%E6%97%A5%E6%9C%AC%E8%AA%9E.md",
+			want:   "gitlab.com/api/v4/projects/user%2Frepo/repository/files/docs%2F%E6%97%A5%E6%9C%AC%E8%AA%9E.md/raw?ref=main",
+			wantOK: true,
+		},
+		{
+			name:   "GitLab blob URL with encoded Japanese in nested path",
+			path:   "gitlab.example.com/group/project/-/blob/main/%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88/%E6%97%A5%E6%9C%AC%E8%AA%9E.md",
+			want:   "gitlab.example.com/api/v4/projects/group%2Fproject/repository/files/%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%2F%E6%97%A5%E6%9C%AC%E8%AA%9E.md/raw?ref=main",
+			wantOK: true,
+		},
 		// Non-matching paths
 		{
 			name:   "GitHub tree URL (not blob)",
