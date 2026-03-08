@@ -109,9 +109,10 @@ func (h *RemoteHandler) renderMarkdownResponse(w http.ResponseWriter, body []byt
 	htmlContent = markdown.RewriteLinks(htmlContent, scheme, server)
 
 	page, err := tmpl.RenderMarkdown(&tmpl.PageData{
-		Title:   path.Base(remotePath) + " - README.md",
-		Content: template.HTML(htmlContent),
-		Theme:   h.cfg.Theme,
+		Title:     path.Base(remotePath) + " - README.md",
+		Content:   template.HTML(htmlContent),
+		Theme:     h.cfg.Theme,
+		SourceURL: scheme + "://" + remotePath,
 	})
 	if err != nil {
 		http.Error(w, "Error rendering page: "+err.Error(), http.StatusInternalServerError)
@@ -148,9 +149,10 @@ func (h *RemoteHandler) renderResponse(w http.ResponseWriter, body []byte, conte
 	htmlContent = markdown.RewriteLinks(htmlContent, scheme, server)
 
 	page, err := tmpl.RenderMarkdown(&tmpl.PageData{
-		Title:   path.Base(remotePath),
-		Content: template.HTML(htmlContent),
-		Theme:   h.cfg.Theme,
+		Title:     path.Base(remotePath),
+		Content:   template.HTML(htmlContent),
+		Theme:     h.cfg.Theme,
+		SourceURL: scheme + "://" + remotePath,
 	})
 	if err != nil {
 		http.Error(w, "Error rendering page: "+err.Error(), http.StatusInternalServerError)

@@ -10,6 +10,7 @@ type PageData struct {
 	Content   template.HTML
 	Theme     string
 	WatchPath string
+	SourceURL string
 }
 
 type DirEntry struct {
@@ -94,13 +95,17 @@ const markdownPageTplTail = `<link rel="stylesheet" href="https://cdn.jsdelivr.n
 <body class="theme-{{.Theme}}">
 <div class="toolbar">
   <a href="/" class="home-link">markdown-proxy</a>
-  <div class="theme-switcher">
-    <label>Theme:</label>
-    <select onchange="switchTheme(this.value)">
-      <option value="github"{{if eq .Theme "github"}} selected{{end}}>GitHub</option>
-      <option value="simple"{{if eq .Theme "simple"}} selected{{end}}>Simple</option>
-      <option value="dark"{{if eq .Theme "dark"}} selected{{end}}>Dark</option>
-    </select>
+  <div class="toolbar-actions">
+    {{if .SourceURL}}<a href="{{.SourceURL}}" target="_blank" rel="noopener" class="toolbar-link">Source</a>{{end}}
+    <a href="javascript:void(0)" onclick="printPage()" class="toolbar-link">Print</a>
+    <div class="theme-switcher">
+      <label>Theme:</label>
+      <select onchange="switchTheme(this.value)">
+        <option value="github"{{if eq .Theme "github"}} selected{{end}}>GitHub</option>
+        <option value="simple"{{if eq .Theme "simple"}} selected{{end}}>Simple</option>
+        <option value="dark"{{if eq .Theme "dark"}} selected{{end}}>Dark</option>
+      </select>
+    </div>
   </div>
 </div>
 <div class="markdown-body">
@@ -108,6 +113,14 @@ const markdownPageTplTail = `<link rel="stylesheet" href="https://cdn.jsdelivr.n
 </div>
 <script>
 mermaid.initialize({startOnLoad: true, theme: document.body.className.includes('dark') ? 'dark' : 'default'});
+function printPage() {
+  var orig = document.title;
+  var name = orig.split(' - ')[0];
+  name = name.replace(/\.(md|markdown)$/i, '');
+  document.title = name;
+  window.print();
+  document.title = orig;
+}
 function switchTheme(theme) {
   document.body.className = 'theme-' + theme;
   localStorage.setItem('mdproxy_theme', theme);

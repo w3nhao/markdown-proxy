@@ -31,12 +31,13 @@ How markdown-proxy compares to other Markdown viewing tools:
 | Code highlighting | ✅ | ✅ | ✅ | ✅ |
 | CSS themes | 3 built-in | 15+ built-in | GitHub only | Customizable |
 | Full-text search | ❌ | ❌ | ❌ | ✅ |
-| Export (PDF, HTML) | ❌ | ✅ (PDF, HTML, Word) | ✅ (HTML) | ❌ |
+| Export (PDF, HTML) | △ ² | ✅ (PDF, HTML, Word) | ✅ (HTML) | ❌ |
 | Authentication | Token-based | — | — | HTTP Basic |
 | Works offline | ✅ | ✅ | ❌ | ✅ |
 | Runtime dependency | None (single binary) | VS Code | Python | Ruby |
 
 ¹ One preview pane per editor group
+² Browser print-to-PDF via toolbar Print link
 
 [mpe]: https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced
 [grip]: https://github.com/joeyespo/grip
@@ -57,6 +58,9 @@ How markdown-proxy compares to other Markdown viewing tools:
   - Blob URL auto-conversion to raw URL (supports self-hosted GitLab with custom domains)
   - Authentication via git credential helper (supports path-based credential matching)
   - Redirect-based auth detection for self-hosted GitLab instances
+- Toolbar actions
+  - Print: browser print with clean filename (toolbar hidden in print output)
+  - Source: link to original URL on remote server (remote pages only)
 - Multiple CSS themes (GitHub, Simple, Dark) with switching UI
 - Live reload for local files (auto-refreshes browser on file changes)
 - Directory listing for local files
@@ -301,7 +305,7 @@ go build -o markdown-proxy ./cmd/markdown-proxy
 - **Markdown files only**: Only `.md` and `.markdown` files are converted to HTML. Other file types are served as-is.
 - **PlantUML disabled by default**: Diagram content is sent to an external server, so it requires explicit opt-in via `--plantuml-server`.
 - **GitHub/GitLab branch detection**: When accessing a repository root URL, only `main` and `master` branches are tried for README.md auto-detection.
-- **No PDF export**: Rendered pages can only be viewed in the browser (use the browser's print-to-PDF as a workaround).
+- **No native PDF export**: Use the toolbar's Print link to export via the browser's print-to-PDF feature.
 - **Hidden files excluded**: Files and directories starting with `.` are not shown in directory listings.
 
 ## Contributing

@@ -14,8 +14,14 @@ body { margin: 0; padding: 0; }
 .home-link { text-decoration: none; font-weight: bold; font-size: 14px; }
 .theme-github .home-link, .theme-simple .home-link { color: #0366d6; }
 .theme-dark .home-link { color: #58a6ff; }
+.toolbar-actions { display: flex; align-items: center; gap: 12px; }
+.toolbar-link { font-size: 13px; text-decoration: none; }
+.theme-github .toolbar-link, .theme-simple .toolbar-link { color: #0366d6; }
+.theme-dark .toolbar-link { color: #58a6ff; }
+.toolbar-link:hover { text-decoration: underline; }
 .theme-switcher { display: flex; align-items: center; gap: 6px; font-size: 13px; }
 .theme-switcher select { padding: 2px 6px; font-size: 13px; }
+@media print { .toolbar { display: none; } }
 .markdown-body {
   max-width: 980px;
   margin: 0 auto;
