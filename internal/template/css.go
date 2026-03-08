@@ -21,7 +21,11 @@ body { margin: 0; padding: 0; }
 .toolbar-link:hover { text-decoration: underline; }
 .theme-switcher { display: flex; align-items: center; gap: 6px; font-size: 13px; }
 .theme-switcher select { padding: 2px 6px; font-size: 13px; }
-@media print { .toolbar { display: none; } }
+@media print {
+  .toolbar { display: none; }
+  table, pre, .math.display, img, blockquote, li { break-inside: avoid; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+}
 .markdown-body {
   max-width: 980px;
   margin: 0 auto;

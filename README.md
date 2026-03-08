@@ -305,7 +305,7 @@ go build -o markdown-proxy ./cmd/markdown-proxy
 - **Markdown files only**: Only `.md` and `.markdown` files are converted to HTML. Other file types are served as-is.
 - **PlantUML disabled by default**: Diagram content is sent to an external server, so it requires explicit opt-in via `--plantuml-server`.
 - **GitHub/GitLab branch detection**: When accessing a repository root URL, only `main` and `master` branches are tried for README.md auto-detection.
-- **No native PDF export**: Use the toolbar's Print link to export via the browser's print-to-PDF feature.
+- **No native PDF export**: Use the toolbar's Print link to export via the browser's print-to-PDF feature. Page breaks are automatically avoided inside tables, code blocks, math expressions, images, blockquotes, and list items; headings are kept together with the following content.
 - **Hidden files excluded**: Files and directories starting with `.` are not shown in directory listings.
 
 ## Contributing
