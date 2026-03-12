@@ -11,6 +11,7 @@ import (
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
+	"github.com/yuin/goldmark/text"
 	"github.com/yuin/goldmark/util"
 )
 
@@ -55,8 +56,16 @@ func Convert(source []byte, plantumlServer string) ([]byte, error) {
 	// Pre-process: replace svg, mermaid, plantuml code blocks with raw HTML
 	source = PreprocessCodeBlocks(source, plantumlServer)
 
+	// Parse into AST
+	reader := text.NewReader(source)
+	doc := md.Parser().Parse(reader)
+
+	// Insert line anchors into AST
+	source = insertLineAnchors(doc, source)
+
+	// Render AST to HTML
 	var buf bytes.Buffer
-	if err := md.Convert(source, &buf); err != nil {
+	if err := md.Renderer().Render(&buf, source, doc); err != nil {
 		return nil, err
 	}
 
