@@ -64,7 +64,8 @@ How markdown-proxy compares to other Markdown viewing tools:
 - Multiple CSS themes (GitHub, Simple, Dark) with switching UI
 - Live reload for local files (auto-refreshes browser on file changes)
 - Directory listing for local files
-- Link rewriting for seamless proxy navigation
+- Line anchor links: `[text](foo.md:12)` or `<a href="foo.md:12">` links navigate to specific source lines with highlighting
+- Link rewriting for seamless proxy navigation (including `file:///` protocol conversion)
 - Top page with smart input (auto-detects file path or URL)
 - Recently opened file history (localStorage)
 - Two operation modes: local mode and remote mode
@@ -105,6 +106,16 @@ Enter a local file path (e.g., `/path/to/README.md`) or a remote URL (e.g., `htt
 | Remote (HTTP) | `http://localhost:9080/http/server/path/to/file.md` |
 | Remote (HTTPS) | `http://localhost:9080/https/server/path/to/file.md` |
 | GitHub repo | `http://localhost:9080/https/github.com/user/repo/blob/main/README.md` |
+
+### Line Anchor Links
+
+Markdown files support line-level linking using the `file:line` syntax:
+
+- `[text](foo.md:12)` — links to line 12 of `foo.md`
+- `[text](foo.md:12-34)` — links to lines 12–34 of `foo.md`
+- `<a href="foo.md:12">text</a>` — same, using raw HTML
+
+When navigating to a line anchor (`#L12` or `#L12-L34`), the page scrolls to the target line and highlights the surrounding content. Highlighting is hidden in print output.
 
 ## Usage
 

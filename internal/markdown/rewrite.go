@@ -5,6 +5,10 @@ import (
 	"strings"
 )
 
+// lineRefRe matches :line or :line-line at the end of a markdown file URL.
+// e.g., "foo.md:12" or "foo.md:12-34"
+var lineRefRe = regexp.MustCompile(`^(.*\.(?:md|markdown)):(\d+)(?:-(\d+))?$`)
+
 var (
 	hrefRe = regexp.MustCompile(`(<a\s[^>]*href=")([^"]+)(")`)
 	srcRe  = regexp.MustCompile(`(<img\s[^>]*src=")([^"]+)(")`)
@@ -44,6 +48,15 @@ func RewriteLinks(htmlContent []byte, scheme string, server string) []byte {
 }
 
 func rewriteURL(url, scheme, server string) string {
+	// Convert line references: file.md:12 → file.md#L12, file.md:12-34 → file.md#L12-L34
+	url = convertLineRef(url)
+
+	// file:/// URL → proxy via /local/
+	if strings.HasPrefix(url, "file:///") {
+		// file:///path/to/file.md → /local/path/to/file.md
+		return "/local" + strings.TrimPrefix(url, "file://")
+	}
+
 	// External URL with .md extension → proxy via /http/ or /https/
 	if strings.HasPrefix(url, "https://") {
 		if isMarkdownOrDir(url) {
@@ -74,6 +87,29 @@ func rewriteURL(url, scheme, server string) string {
 	}
 
 	return url
+}
+
+// convertLineRef converts file.md:12 to file.md#L12 and file.md:12-34 to file.md#L12-L34.
+func convertLineRef(url string) string {
+	// Strip existing fragment/query for matching
+	base := url
+	if idx := strings.IndexAny(base, "?#"); idx >= 0 {
+		base = base[:idx]
+	}
+
+	m := lineRefRe.FindStringSubmatch(base)
+	if m == nil {
+		return url
+	}
+
+	filePath := m[1]
+	startLine := m[2]
+	endLine := m[3]
+
+	if endLine != "" {
+		return filePath + "#L" + startLine + "-L" + endLine
+	}
+	return filePath + "#L" + startLine
 }
 
 func isMarkdownOrDir(url string) bool {

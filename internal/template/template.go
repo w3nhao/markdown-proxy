@@ -86,6 +86,7 @@ const markdownPageTplHead = `<!DOCTYPE html>
 <style>` + simpleCSS + `</style>
 <style>` + darkCSS + `</style>
 <style>` + commonCSS + `</style>
+<style>` + lineAnchorCSS + `</style>
 `
 
 const markdownPageTplTail = `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
@@ -147,6 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
+` + lineAnchorJS + `
 {{if .WatchPath}}
 <script>
 (function() {
