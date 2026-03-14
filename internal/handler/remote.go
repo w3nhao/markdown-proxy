@@ -129,6 +129,26 @@ func (h *RemoteHandler) renderResponse(w http.ResponseWriter, body []byte, conte
 	// fetchPath may be a GitLab API URL (ending in /raw?ref=...) which has no file extension.
 	ext := strings.ToLower(path.Ext(remotePath))
 
+	// Text files: convert to HTML with line anchors
+	if ext == ".txt" {
+		htmlContent := markdown.ConvertText(body)
+		server := ghub.HostFromPath(remotePath)
+		htmlContent = markdown.RewriteLinks(htmlContent, scheme, server)
+		page, err := tmpl.RenderMarkdown(&tmpl.PageData{
+			Title:     path.Base(remotePath),
+			Content:   template.HTML(htmlContent),
+			Theme:     h.cfg.Theme,
+			SourceURL: scheme + "://" + remotePath,
+		})
+		if err != nil {
+			http.Error(w, "Error rendering page: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.Write(page)
+		return
+	}
+
 	// Non-markdown files: pass through
 	if ext != ".md" && ext != ".markdown" {
 		if contentType != "" {

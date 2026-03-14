@@ -64,7 +64,8 @@ How markdown-proxy compares to other Markdown viewing tools:
 - Multiple CSS themes (GitHub, Simple, Dark) with switching UI
 - Live reload for local files (auto-refreshes browser on file changes)
 - Directory listing for local files
-- Line anchor links: `[text](foo.md:12)` or `<a href="foo.md:12">` links navigate to specific source lines with highlighting
+- Line anchor links: `[text](foo.md:12)` or `<a href="foo.md:12">` links navigate to specific source lines with highlighting (Markdown and text files)
+- Text file rendering: `.txt` files are displayed in HTML with line anchors, themes, and live reload
 - Link rewriting for seamless proxy navigation (including `file:///` protocol conversion)
 - Top page with smart input (auto-detects file path or URL)
 - Recently opened file history (localStorage)
@@ -109,13 +110,14 @@ Enter a local file path (e.g., `/path/to/README.md`) or a remote URL (e.g., `htt
 
 ### Line Anchor Links
 
-Markdown files support line-level linking using the `file:line` syntax:
+Markdown and text files support line-level linking using the `file:line` syntax:
 
 - `[text](foo.md:12)` — links to line 12 of `foo.md`
 - `[text](foo.md:12-34)` — links to lines 12–34 of `foo.md`
+- `[text](foo.txt:12)` — links to line 12 of `foo.txt`
 - `<a href="foo.md:12">text</a>` — same, using raw HTML
 
-When navigating to a line anchor (`#L12` or `#L12-L34`), the page scrolls to the target line and highlights the surrounding content. Highlighting is hidden in print output.
+When navigating to a line anchor (`#L12` or `#L12-L34`), the page scrolls to the target line and highlights the surrounding content. For text files, individual lines are highlighted; for Markdown files, the containing block element is highlighted. Highlighting is hidden in print output.
 
 ## Usage
 
@@ -313,7 +315,7 @@ go build -o markdown-proxy ./cmd/markdown-proxy
 ## Known Limitations
 
 - **Read-only viewer**: No editing capabilities; this is a rendering-only tool.
-- **Markdown files only**: Only `.md` and `.markdown` files are converted to HTML. Other file types are served as-is.
+- **Limited file type support**: Only `.md`, `.markdown`, and `.txt` files are rendered as HTML. Other file types are served as-is.
 - **PlantUML disabled by default**: Diagram content is sent to an external server, so it requires explicit opt-in via `--plantuml-server`.
 - **GitHub/GitLab branch detection**: When accessing a repository root URL, only `main` and `master` branches are tried for README.md auto-detection.
 - **No native PDF export**: Use the toolbar's Print link to export via the browser's print-to-PDF feature. Page breaks are automatically avoided inside tables, code blocks, math expressions, images, blockquotes, and list items; headings are kept together with the following content.

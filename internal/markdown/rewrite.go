@@ -7,7 +7,7 @@ import (
 
 // lineRefRe matches :line or :line-line at the end of a markdown file URL.
 // e.g., "foo.md:12" or "foo.md:12-34"
-var lineRefRe = regexp.MustCompile(`^(.*\.(?:md|markdown)):(\d+)(?:-(\d+))?$`)
+var lineRefRe = regexp.MustCompile(`^(.*\.(?:md|markdown|txt)):(\d+)(?:-(\d+))?$`)
 
 var (
 	hrefRe = regexp.MustCompile(`(<a\s[^>]*href=")([^"]+)(")`)

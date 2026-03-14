@@ -39,18 +39,23 @@ const lineAnchorJS = `<script>
     // Scroll to first anchor
     anchors[0].scrollIntoView({behavior: 'smooth', block: 'center'});
 
-    // Highlight: find the parent block element of each anchor and highlight it
+    // Highlight: for source-line spans (text files), highlight the element directly;
+    // for markdown anchors, highlight the parent block element.
     var highlighted = new Set();
     anchors.forEach(function(anchor) {
-      // Walk up to find the nearest block-level parent that contains content
-      var parent = anchor.parentElement;
-      while (parent && parent.classList.contains('markdown-body')) {
-        parent = null;
-        break;
+      var target;
+      if (anchor.classList.contains('source-line')) {
+        target = anchor;
+      } else {
+        target = anchor.parentElement;
+        while (target && target.classList.contains('markdown-body')) {
+          target = null;
+          break;
+        }
       }
-      if (parent && !highlighted.has(parent)) {
-        highlighted.add(parent);
-        parent.classList.add('line-highlight');
+      if (target && !highlighted.has(target)) {
+        highlighted.add(target);
+        target.classList.add('line-highlight');
       }
     });
   }
