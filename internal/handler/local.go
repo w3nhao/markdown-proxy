@@ -75,6 +75,24 @@ func (h *LocalHandler) serveFile(w http.ResponseWriter, filePath string) {
 
 	ext := strings.ToLower(filepath.Ext(filePath))
 
+	// Text files: convert to HTML with line anchors
+	if ext == ".txt" {
+		htmlContent := markdown.ConvertText(data)
+		page, err := tmpl.RenderMarkdown(&tmpl.PageData{
+			Title:     filepath.Base(filePath),
+			Content:   template.HTML(htmlContent),
+			Theme:     h.cfg.Theme,
+			WatchPath: filePath,
+		})
+		if err != nil {
+			http.Error(w, "Error rendering page: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.Write(page)
+		return
+	}
+
 	// Non-markdown files: serve as-is
 	if ext != ".md" && ext != ".markdown" {
 		contentType := mime.TypeByExtension(ext)
