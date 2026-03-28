@@ -129,7 +129,7 @@ func insertLineAnchors(doc ast.Node, source []byte) []byte {
 
 	// Apply insertions
 	for _, ins := range insertions {
-		anchorHTML := fmt.Sprintf(`<a id="L%d"></a>`, ins.lineNum)
+		anchorHTML := fmt.Sprintf(`<span id="L%d"></span>`, ins.lineNum)
 		start := len(source)
 		source = append(source, []byte(anchorHTML)...)
 		end := len(source)
