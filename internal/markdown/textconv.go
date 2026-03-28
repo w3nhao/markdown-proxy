@@ -14,7 +14,7 @@ func ConvertText(source []byte) []byte {
 	lines := strings.Split(string(source), "\n")
 
 	var buf bytes.Buffer
-	buf.WriteString("<pre><code>")
+	buf.WriteString("<pre class=\"text-file\"><code>")
 	for i, line := range lines {
 		lineNum := i + 1
 		fmt.Fprintf(&buf, `<span id="L%d" class="source-line">`, lineNum)

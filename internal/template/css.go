@@ -26,6 +26,9 @@ body { margin: 0; padding: 0; }
   table, pre, .math.display, img, blockquote, li { break-inside: avoid; }
   h1, h2, h3, h4, h5, h6 { break-after: avoid; }
 }
+.markdown-body pre.text-file {
+  white-space: pre-wrap;
+}
 .markdown-body {
   max-width: 980px;
   margin: 0 auto;
