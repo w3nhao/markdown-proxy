@@ -83,14 +83,17 @@ How markdown-proxy compares to other Markdown viewing tools:
 # Install
 go install github.com/patakuti/markdown-proxy/cmd/markdown-proxy@latest
 
-# Start the server
-markdown-proxy
+# Open a file directly (starts server automatically if needed)
+markdown-proxy README.md
 
-# Open in browser
-open http://localhost:9080/
+# Open a remote URL
+markdown-proxy https://github.com/user/repo
+
+# Or start the server manually and browse to http://localhost:9080/
+markdown-proxy
 ```
 
-Enter a local file path (e.g., `/path/to/README.md`) or a remote URL (e.g., `https://github.com/user/repo`) on the top page.
+When a file or URL is given as an argument, markdown-proxy checks if the server is already running; if not, it starts one in the background. Then it opens the file in your default browser. Without arguments, it starts the server in the foreground as before.
 
 ## Use Cases
 
@@ -125,8 +128,18 @@ When navigating to a line anchor (`#L12` or `#L12-L34`), the page scrolls to the
 ## Usage
 
 ```bash
-markdown-proxy [options]
+markdown-proxy [options] [file-or-url]
 ```
+
+When `file-or-url` is provided:
+- **Local file**: Opens the file via the proxy (relative paths are resolved automatically)
+  - `markdown-proxy README.md`
+  - `markdown-proxy ../docs/design.md`
+  - `markdown-proxy /absolute/path/to/file.md`
+- **Remote URL**: Opens the URL via the proxy
+  - `markdown-proxy https://github.com/user/repo`
+- If the server is not already running, it is started automatically in the background
+- The file is opened in the default browser (`xdg-open` on Linux, `start` on Windows, `open` on macOS)
 
 ### Options
 
