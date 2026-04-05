@@ -19,6 +19,12 @@ func main() {
 		fmt.Println(version)
 		os.Exit(0)
 	}
+	if cfg.Configure {
+		if err := config.RunConfigure(os.Stdin, os.Stdout); err != nil {
+			log.Fatal(err)
+		}
+		return
+	}
 	if err := cfg.Validate(); err != nil {
 		log.Fatal(err)
 	}

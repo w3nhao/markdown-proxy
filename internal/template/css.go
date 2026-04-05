@@ -29,6 +29,36 @@ body { margin: 0; padding: 0; }
 .markdown-body pre.text-file {
   white-space: pre-wrap;
 }
+.plantuml-notice {
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.plantuml-notice code {
+  padding: .2em .4em;
+  border-radius: 3px;
+  font-size: 85%;
+}
+.theme-github .plantuml-notice,
+.theme-simple .plantuml-notice {
+  background: #fff8c5;
+  border: 1px solid #d4a72c;
+  color: #4d3800;
+}
+.theme-github .plantuml-notice code,
+.theme-simple .plantuml-notice code {
+  background: rgba(0,0,0,.08);
+}
+.theme-dark .plantuml-notice {
+  background: #2d2a1e;
+  border: 1px solid #966c00;
+  color: #e3b341;
+}
+.theme-dark .plantuml-notice code {
+  background: rgba(255,255,255,.1);
+}
 .markdown-body {
   max-width: 980px;
   margin: 0 auto;

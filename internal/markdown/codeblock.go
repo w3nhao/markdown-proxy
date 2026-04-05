@@ -33,7 +33,11 @@ func PreprocessCodeBlocks(source []byte, plantumlServer string) []byte {
 				imgURL := fmt.Sprintf("%s/svg/%s", strings.TrimRight(plantumlServer, "/"), encoded)
 				return []byte(fmt.Sprintf("\n<div class=\"plantuml-container\"><img src=\"%s\" alt=\"PlantUML diagram\"></div>\n", imgURL))
 			}
-			return match
+			return []byte("\n<div class=\"plantuml-notice\">" +
+				"<strong>PlantUML rendering is disabled.</strong> " +
+				"To enable, start with <code>--plantuml-server URL</code> " +
+				"or run <code>markdown-proxy --configure</code> to set up." +
+				"</div>\n")
 		}
 		return match
 	})
