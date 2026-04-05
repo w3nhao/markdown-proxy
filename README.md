@@ -53,7 +53,9 @@ How markdown-proxy compares to other Markdown viewing tools:
   - Mermaid: client-side rendering via mermaid.js from ```` ```mermaid ```` code blocks
   - PlantUML: server-side rendering from ```` ```plantuml ```` code blocks (requires `--plantuml-server`)
     - Disabled by default because diagram content is sent to the specified server
+    - When disabled, a hint is shown in place of each PlantUML block
     - To use the public server: `--plantuml-server https://www.plantuml.com/plantuml`
+    - Use `--configure` to save the setting permanently
 - GitHub/GitLab integration
   - Blob URL auto-conversion to raw URL (supports self-hosted GitLab with custom domains)
   - Authentication via git credential helper (supports path-based credential matching)
@@ -72,6 +74,7 @@ How markdown-proxy compares to other Markdown viewing tools:
 - Two operation modes: local mode and remote mode
 - Token-based authentication for remote access
 - Access logging with automatic log rotation
+- Configuration file (`~/.config/markdown-proxy/config.json`) with interactive setup via `--configure`
 - Single binary, no runtime dependencies
 
 ## Quick Start
@@ -142,7 +145,42 @@ markdown-proxy [options]
 | `-access-log-max-backups` | Max number of old log files to retain | `3` |
 | `-access-log-max-age` | Max days to retain old log files | `28` |
 | `-verbose`, `-v` | Enable debug logging to stderr | `false` |
+| `-configure` | Interactively create configuration file | |
 | `-version` | Show version and exit | |
+
+## Configuration File
+
+Settings can be saved to a configuration file so you don't need to pass flags every time.
+
+### Interactive Setup
+
+```bash
+markdown-proxy --configure
+```
+
+This walks you through each setting interactively and saves the result.
+
+### File Location
+
+| Platform | Path |
+|----------|------|
+| Linux | `~/.config/markdown-proxy/config.json` |
+| Windows | `%APPDATA%/markdown-proxy/config.json` |
+
+### Supported Settings
+
+The configuration file stores these settings as JSON:
+
+```json
+{
+  "plantuml-server": "https://www.plantuml.com/plantuml",
+  "theme": "dark",
+  "port": 9080,
+  "listen": "127.0.0.1"
+}
+```
+
+Command-line flags override configuration file values. Security-sensitive settings (`-auth-token`, `-access-log`, etc.) are not stored in the config file.
 
 ## Operation Modes
 
@@ -316,7 +354,7 @@ go build -o markdown-proxy ./cmd/markdown-proxy
 
 - **Read-only viewer**: No editing capabilities; this is a rendering-only tool.
 - **Limited file type support**: Only `.md`, `.markdown`, and `.txt` files are rendered as HTML. Other file types are served as-is.
-- **PlantUML disabled by default**: Diagram content is sent to an external server, so it requires explicit opt-in via `--plantuml-server`.
+- **PlantUML disabled by default**: Diagram content is sent to an external server, so it requires explicit opt-in via `--plantuml-server` or `--configure`. When disabled, a hint message is shown in place of PlantUML blocks.
 - **GitHub/GitLab branch detection**: When accessing a repository root URL, only `main` and `master` branches are tried for README.md auto-detection.
 - **No native PDF export**: Use the toolbar's Print link to export via the browser's print-to-PDF feature. Page breaks are automatically avoided inside tables, code blocks, math expressions, images, blockquotes, and list items; headings are kept together with the following content.
 - **Hidden files excluded**: Files and directories starting with `.` are not shown in directory listings.
