@@ -17,24 +17,25 @@ markdown-proxy solves these problems by rendering Markdown files — including P
 
 How markdown-proxy compares to other Markdown viewing tools:
 
-| Feature | markdown-proxy (this tool) | [Markdown Preview Enhanced][mpe] | [grip][grip] | [Madness][madness] |
-|---------|:-:|:-:|:-:|:-:|
-| Type | HTTP server | VS Code extension | HTTP server | HTTP server |
-| Local file viewing | ✅ | ✅ | ✅ | ✅ |
-| Remote URL fetching | ✅ (GitHub/GitLab) | ❌ | ❌ | ❌ |
-| Multi-tab viewing | ✅ | △ ¹ | ✅ | ✅ |
-| Directory listing | ✅ | ❌ | ❌ | ✅ |
-| Live reload | ✅ | ✅ | ✅ | ❌ |
-| Mermaid diagrams | ✅ | ✅ | ❌ | ✅ |
-| PlantUML diagrams | ✅ | ✅ | ❌ | ❌ |
-| Math rendering | ✅ (KaTeX) | ✅ (KaTeX/MathJax) | ❌ | ❌ |
-| Code highlighting | ✅ | ✅ | ✅ | ✅ |
-| CSS themes | 3 built-in | 15+ built-in | GitHub only | Customizable |
-| Full-text search | ❌ | ❌ | ❌ | ✅ |
-| Export (PDF, HTML) | △ ² | ✅ (PDF, HTML, Word) | ✅ (HTML) | ❌ |
-| Authentication | Token-based | — | — | HTTP Basic |
-| Works offline | ✅ | ✅ | ❌ | ✅ |
-| Runtime dependency | None (single binary) | VS Code | Python | Ruby |
+| Feature | markdown-proxy (this tool) | [Markdown Preview Enhanced][mpe] | [grip][grip] | [Madness][madness] | [mdserve][mdserve] |
+|---------|:-:|:-:|:-:|:-:|:-:|
+| Type | HTTP server | VS Code extension | HTTP server | HTTP server | HTTP server |
+| Local file viewing | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Remote URL fetching | ✅ (GitHub/GitLab) | ❌ | ❌ | ❌ | ❌ |
+| Multi-tab viewing | ✅ | △ ¹ | ✅ | ✅ | ✅ |
+| Directory listing | ✅ | ❌ | ❌ | ✅ | ✅ |
+| CLI open | ✅ (file/URL) | — | ✅ (file) | ❌ | ✅ (--open) |
+| Live reload | ✅ | ✅ | ✅ | ❌ | ✅ |
+| Mermaid diagrams | ✅ | ✅ | ❌ | ✅ | ✅ |
+| PlantUML diagrams | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Math rendering | ✅ (KaTeX) | ✅ (KaTeX/MathJax) | ❌ | ❌ | ❌ |
+| Code highlighting | ✅ | ✅ | ✅ | ✅ | ✅ |
+| CSS themes | 3 built-in | 15+ built-in | GitHub only | Customizable | 5 built-in |
+| Full-text search | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Export (PDF, HTML) | △ ² | ✅ (PDF, HTML, Word) | ✅ (HTML) | ❌ | ❌ |
+| Authentication | Token-based | — | — | HTTP Basic | ❌ |
+| Works offline | ✅ | ✅ | ❌ | ✅ | ✅ |
+| Runtime dependency | None (single binary) | VS Code | Python | Ruby | None (single binary) |
 
 ¹ One preview pane per editor group
 ² Browser print-to-PDF via toolbar Print link
@@ -42,6 +43,7 @@ How markdown-proxy compares to other Markdown viewing tools:
 [mpe]: https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced
 [grip]: https://github.com/joeyespo/grip
 [madness]: https://github.com/DannyBen/madness
+[mdserve]: https://github.com/jfernandez/mdserve
 
 ## Features
 
