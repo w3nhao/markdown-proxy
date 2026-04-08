@@ -147,6 +147,43 @@ func TestPreprocessMathBlocks(t *testing.T) {
 			input:  "````\n```\n$$a=b$$\n```\n````\n$$x=1$$",
 			expect: "````\n```\n$$a=b$$\n```\n````\n$$\nx=1\n$$",
 		},
+
+		// Blockquote cases
+		{
+			name:   "blockquote single-line display math",
+			input:  "> $$ a = b $$",
+			expect: "> $$\n>  a = b \n> $$",
+		},
+		{
+			name:   "blockquote opening $$ with content",
+			input:  "> $$\\begin{aligned}\n> a=b\n> $$",
+			expect: "> $$\n> \\begin{aligned}\n> a=b\n> $$",
+		},
+		{
+			name:   "blockquote closing $$ with content",
+			input:  "> $$\n> a=b$$",
+			expect: "> $$\n> a=b\n> $$",
+		},
+		{
+			name:   "blockquote multi-line unchanged",
+			input:  "> $$\n> a=b\n> $$",
+			expect: "> $$\n> a=b\n> $$",
+		},
+		{
+			name:   "nested blockquote single-line",
+			input:  "> > $$a=b$$",
+			expect: "> > $$\n> > a=b\n> > $$",
+		},
+		{
+			name:   "blockquote fenced code block unchanged",
+			input:  "> ```\n> $$a=b$$\n> ```",
+			expect: "> ```\n> $$a=b$$\n> ```",
+		},
+		{
+			name:   "blockquote mixed content",
+			input:  "> text\n>\n> $$E=mc^2$$\n>\n> more text",
+			expect: "> text\n>\n> $$\n> E=mc^2\n> $$\n>\n> more text",
+		},
 	}
 
 	for _, tt := range tests {
