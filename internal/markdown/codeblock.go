@@ -24,6 +24,10 @@ func PreprocessCodeBlocks(source []byte, plantumlServer string) []byte {
 
 		switch lang {
 		case "svg":
+			// Remove blank lines from SVG content to prevent goldmark from
+			// splitting the HTML block (CommonMark HTML block type 6 ends at
+			// a blank line).
+			code = removeBlankLines(code)
 			return []byte(fmt.Sprintf("\n<div class=\"svg-container\">\n%s</div>\n", code))
 		case "mermaid":
 			return []byte(fmt.Sprintf("\n<pre class=\"mermaid\">\n%s</pre>\n", code))
@@ -41,6 +45,18 @@ func PreprocessCodeBlocks(source []byte, plantumlServer string) []byte {
 		}
 		return match
 	})
+}
+
+// removeBlankLines removes blank lines (empty or whitespace-only) from the text.
+func removeBlankLines(s string) string {
+	var b strings.Builder
+	for _, line := range strings.Split(s, "\n") {
+		if strings.TrimSpace(line) != "" {
+			b.WriteString(line)
+			b.WriteByte('\n')
+		}
+	}
+	return b.String()
 }
 
 // encodePlantUML encodes PlantUML text for the PlantUML server URL.
