@@ -66,6 +66,7 @@ How markdown-proxy compares to other Markdown viewing tools:
   - Print: browser print with clean filename (toolbar hidden in print output)
   - Source: link to original URL on remote server (remote pages only)
 - Multiple CSS themes (GitHub, Simple, Dark) with switching UI
+- Table of contents sidebar: toggle `TOC` in the toolbar to open a right-side panel with auto-extracted headings; visibility persists per browser (localStorage)
 - Live reload for local files (auto-refreshes browser on file changes)
 - Directory listing for local files
 - Line anchor links: `[text](foo.md:12)` or `<a href="foo.md:12">` links navigate to specific source lines with highlighting (Markdown and text files)
