@@ -90,7 +90,7 @@ const markdownPageTplHead = `<!DOCTYPE html>
 <style>` + commonCSS + `</style>
 <style>` + lineAnchorCSS + `</style>
 <style>` + tocCSS + `</style>
-<style>` + exportCSS + `</style>
+<style>` + fabCSS + `</style>
 `
 
 var markdownPageTplTail = `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
@@ -98,25 +98,6 @@ var markdownPageTplTail = `<link rel="stylesheet" href="https://cdn.jsdelivr.net
 <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js" crossorigin="anonymous"></script>
 </head>
 <body class="theme-{{.Theme}}">
-<div class="toolbar">
-  <a href="/" class="home-link">markdown-proxy</a>
-  <div class="toolbar-actions">
-    {{if .SourceURL}}<a href="{{.SourceURL}}" target="_blank" rel="noopener" class="toolbar-link">Source</a>{{end}}
-    <a href="javascript:void(0)" onclick="printPage()" class="toolbar-link">Print</a>
-    <a href="javascript:void(0)" class="toolbar-link toc-toggle">TOC</a>
-    ` + exportToolbarHTML + `
-    <div class="theme-switcher">
-      <label>Theme:</label>
-      <select onchange="switchTheme(this.value)">
-        <option value="github"{{if eq .Theme "github"}} selected{{end}}>GitHub</option>
-        <option value="simple"{{if eq .Theme "simple"}} selected{{end}}>Simple</option>
-        <option value="dark"{{if eq .Theme "dark"}} selected{{end}}>Dark</option>
-        <option value="academia"{{if eq .Theme "academia"}} selected{{end}}>Academia</option>
-        <option value="academia-dark"{{if eq .Theme "academia-dark"}} selected{{end}}>Academia Dark</option>
-      </select>
-    </div>
-  </div>
-</div>
 <div class="markdown-body">
 {{.Content}}
 </div>
@@ -124,29 +105,9 @@ var markdownPageTplTail = `<link rel="stylesheet" href="https://cdn.jsdelivr.net
   <div class="toc-header">Table of Contents</div>
   <div class="toc-body"><ul class="toc-list"></ul></div>
 </aside>
+` + fabHTML + `
 <script>
 mermaid.initialize({startOnLoad: true, theme: document.body.className.includes('dark') ? 'dark' : 'default'});
-function printPage() {
-  var orig = document.title;
-  var name = orig.split(' - ')[0];
-  name = name.replace(/\.(md|markdown)$/i, '');
-  document.title = name;
-  window.print();
-  document.title = orig;
-}
-function switchTheme(theme) {
-  document.body.className = 'theme-' + theme;
-  localStorage.setItem('mdproxy_theme', theme);
-  mermaid.initialize({startOnLoad: false, theme: theme === 'dark' ? 'dark' : 'default'});
-}
-(function() {
-  var saved = localStorage.getItem('mdproxy_theme');
-  if (saved) {
-    document.body.className = 'theme-' + saved;
-    var sel = document.querySelector('.theme-switcher select');
-    if (sel) sel.value = saved;
-  }
-})();
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -163,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
 ` + lineAnchorJS + `
 ` + tocJS + `
 <script>` + htmlToImageJS + `</script>
-<script>` + exportJS + `</script>
+<script>` + fabJS + `</script>
 
 {{if .WatchPath}}
 <script>

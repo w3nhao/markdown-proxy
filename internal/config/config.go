@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type Config struct {
@@ -21,6 +22,18 @@ type Config struct {
 	AccessLogMaxBack int
 	AccessLogMaxAge  int
 	Configure        bool
+	Roots            []Root
+}
+
+// Root describes a directory surfaced on the home page.
+// Path is the absolute local path on the server running markdown-proxy.
+// Label (optional) is a short display name; defaults to filepath.Base(Path).
+// Origin (optional) is free-text telling where the files were mounted/synced
+// from, e.g. "perhentian:~/projects/20260422_super_harness".
+type Root struct {
+	Path   string `json:"path"`
+	Label  string `json:"label,omitempty"`
+	Origin string `json:"origin,omitempty"`
 }
 
 // configFilePathFunc returns the path to the configuration file.
@@ -42,6 +55,7 @@ type fileConfig struct {
 	Port           int    `json:"port,omitempty"`
 	Listen         string `json:"listen,omitempty"`
 	Verbose        bool   `json:"verbose,omitempty"`
+	Roots          []Root `json:"roots,omitempty"`
 }
 
 // loadConfigFile reads the config file and returns the parsed values.
@@ -97,7 +111,22 @@ func Parse() *Config {
 	flag.IntVar(&c.AccessLogMaxBack, "access-log-max-backups", 3, "Max number of old access log files to retain")
 	flag.IntVar(&c.AccessLogMaxAge, "access-log-max-age", 28, "Max number of days to retain old access log files")
 	flag.BoolVar(&c.Configure, "configure", false, "Interactively create configuration file")
+	var rootsFlag string
+	flag.StringVar(&rootsFlag, "roots", "", "Comma-separated root directories to surface on the home page (local mode only)")
 	flag.Parse()
+
+	// Merge roots: CLI flag overrides, otherwise use config-file value.
+	// The CLI form is path-only — use the config file for label/origin metadata.
+	if rootsFlag != "" {
+		for _, s := range strings.Split(rootsFlag, ",") {
+			s = strings.TrimSpace(s)
+			if s != "" {
+				c.Roots = append(c.Roots, Root{Path: s})
+			}
+		}
+	} else if len(fc.Roots) > 0 {
+		c.Roots = append(c.Roots, fc.Roots...)
+	}
 	return c
 }
 
