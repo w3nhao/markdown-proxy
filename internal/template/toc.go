@@ -90,6 +90,31 @@ body.toc-visible .markdown-body { margin-right: 280px; }
   border-left-color: #07c;
   background: rgba(0,119,204,0.08);
 }
+.theme-academia .toc-panel {
+  background: #fafaf8;
+  border-left-color: #e0e0dc;
+  font-family: Tinos, Palatino, serif;
+}
+.theme-academia .toc-header { border-bottom-color: #e0e0dc; color: #1a1a1a; }
+.theme-academia .toc-list a.active {
+  border-left-color: #5f9b65;
+  background: rgba(95,155,101,0.10);
+  color: #3d7a42;
+}
+.theme-academia-dark .toc-panel {
+  background: #1e1e1c;
+  border-left-color: #2e2e2b;
+  color: #d4d4d0;
+  font-family: Tinos, Palatino, serif;
+}
+.theme-academia-dark .toc-header { border-bottom-color: #2e2e2b; color: #f0f0ea; }
+.theme-academia-dark .toc-list a:hover { background: rgba(255,255,255,0.06); }
+.theme-academia-dark .toc-list .toc-caret { color: #a8a8a5; }
+.theme-academia-dark .toc-list a.active {
+  border-left-color: #7fd285;
+  background: rgba(127,210,133,0.10);
+  color: #a3e0a8;
+}
 @media (max-width: 900px) {
   body.toc-visible .markdown-body { margin-right: 0; }
   .toc-panel { box-shadow: -2px 0 8px rgba(0,0,0,0.15); }
