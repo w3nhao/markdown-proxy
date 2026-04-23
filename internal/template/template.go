@@ -85,6 +85,8 @@ const markdownPageTplHead = `<!DOCTYPE html>
 <style>` + githubCSS + `</style>
 <style>` + simpleCSS + `</style>
 <style>` + darkCSS + `</style>
+<style>` + academiaCSS + `</style>
+<style>` + academiaDarkCSS + `</style>
 <style>` + commonCSS + `</style>
 <style>` + lineAnchorCSS + `</style>
 <style>` + tocCSS + `</style>
@@ -107,6 +109,8 @@ const markdownPageTplTail = `<link rel="stylesheet" href="https://cdn.jsdelivr.n
         <option value="github"{{if eq .Theme "github"}} selected{{end}}>GitHub</option>
         <option value="simple"{{if eq .Theme "simple"}} selected{{end}}>Simple</option>
         <option value="dark"{{if eq .Theme "dark"}} selected{{end}}>Dark</option>
+        <option value="academia"{{if eq .Theme "academia"}} selected{{end}}>Academia</option>
+        <option value="academia-dark"{{if eq .Theme "academia-dark"}} selected{{end}}>Academia Dark</option>
       </select>
     </div>
   </div>
@@ -180,6 +184,8 @@ const dirPageTpl = `<!DOCTYPE html>
 <style>` + githubCSS + `</style>
 <style>` + simpleCSS + `</style>
 <style>` + darkCSS + `</style>
+<style>` + academiaCSS + `</style>
+<style>` + academiaDarkCSS + `</style>
 <style>` + commonCSS + `</style>
 </head>
 <body class="theme-{{.Theme}}">
@@ -191,6 +197,8 @@ const dirPageTpl = `<!DOCTYPE html>
       <option value="github"{{if eq .Theme "github"}} selected{{end}}>GitHub</option>
       <option value="simple"{{if eq .Theme "simple"}} selected{{end}}>Simple</option>
       <option value="dark"{{if eq .Theme "dark"}} selected{{end}}>Dark</option>
+        <option value="academia"{{if eq .Theme "academia"}} selected{{end}}>Academia</option>
+        <option value="academia-dark"{{if eq .Theme "academia-dark"}} selected{{end}}>Academia Dark</option>
     </select>
   </div>
 </div>
@@ -246,6 +254,8 @@ const errorPageTpl = `<!DOCTYPE html>
 <style>` + githubCSS + `</style>
 <style>` + simpleCSS + `</style>
 <style>` + darkCSS + `</style>
+<style>` + academiaCSS + `</style>
+<style>` + academiaDarkCSS + `</style>
 <style>` + commonCSS + `</style>
 </head>
 <body class="theme-{{.Theme}}">
@@ -257,6 +267,8 @@ const errorPageTpl = `<!DOCTYPE html>
       <option value="github"{{if eq .Theme "github"}} selected{{end}}>GitHub</option>
       <option value="simple"{{if eq .Theme "simple"}} selected{{end}}>Simple</option>
       <option value="dark"{{if eq .Theme "dark"}} selected{{end}}>Dark</option>
+        <option value="academia"{{if eq .Theme "academia"}} selected{{end}}>Academia</option>
+        <option value="academia-dark"{{if eq .Theme "academia-dark"}} selected{{end}}>Academia Dark</option>
     </select>
   </div>
 </div>
