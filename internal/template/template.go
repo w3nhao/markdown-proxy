@@ -90,11 +90,12 @@ const markdownPageTplHead = `<!DOCTYPE html>
 <style>` + commonCSS + `</style>
 <style>` + lineAnchorCSS + `</style>
 <style>` + tocCSS + `</style>
+<style>` + exportCSS + `</style>
 `
 
-const markdownPageTplTail = `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+var markdownPageTplTail = `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js" crossorigin="anonymous"></script>
 </head>
 <body class="theme-{{.Theme}}">
 <div class="toolbar">
@@ -103,6 +104,7 @@ const markdownPageTplTail = `<link rel="stylesheet" href="https://cdn.jsdelivr.n
     {{if .SourceURL}}<a href="{{.SourceURL}}" target="_blank" rel="noopener" class="toolbar-link">Source</a>{{end}}
     <a href="javascript:void(0)" onclick="printPage()" class="toolbar-link">Print</a>
     <a href="javascript:void(0)" class="toolbar-link toc-toggle">TOC</a>
+    ` + exportToolbarHTML + `
     <div class="theme-switcher">
       <label>Theme:</label>
       <select onchange="switchTheme(this.value)">
@@ -160,6 +162,9 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 ` + lineAnchorJS + `
 ` + tocJS + `
+<script>` + htmlToImageJS + `</script>
+<script>` + exportJS + `</script>
+
 {{if .WatchPath}}
 <script>
 (function() {
